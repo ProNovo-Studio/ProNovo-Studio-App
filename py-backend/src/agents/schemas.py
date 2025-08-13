@@ -21,3 +21,6 @@ class ProteinDesignInput(BaseModel):
 
 class PDBSearchInput(BaseModel):
     pdb_id: str
+
+class RfDiffusionPoll(BaseModel):
+    job_id: str

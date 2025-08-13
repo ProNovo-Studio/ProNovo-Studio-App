@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import Optional
-from agents.agent_graph import get_langgraph_agent, get_test_graph
+from agents.agent_graph import get_langgraph_agent
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.messages import ToolMessage
 import json
@@ -14,7 +14,7 @@ class message(BaseModel):
     content: str
     data: Optional[str]
 
-agent = get_test_graph()
+agent = get_langgraph_agent()
 
 @send_message_router.post("/message-send")
 async def send_message(data: message) -> message:
@@ -25,15 +25,21 @@ async def send_message(data: message) -> message:
     }
 
     result = agent.invoke(state)
+    # for debugging use stream()
+    # for step in agent.stream(state):
+    #     print("\n=== STEP ===")
+    #     print(step)
 
     # Extract final PDB data from tool outputs
     pdb_data = None
     for bot_message in result["messages"]:
         if isinstance(bot_message, ToolMessage):
             output = bot_message.content
-            if bot_message.name == "rf_diffusion_tool":
-                output = json.loads(output)
-                pdb_data = output["pdb"]
+            if bot_message.name == "rf_diffusion_poll_tool":
+                output: dict = json.loads(output)
+                print(output)
+                if "pdb" in output.keys():
+                    pdb_data = output["pdb"]
 
     return message(
         id=data.id + 1,

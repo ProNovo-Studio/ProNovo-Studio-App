@@ -4,12 +4,20 @@ from agents.schemas import ProteinDesignInput
 import requests
 import os
 import json
-from agents.schemas import ProteinDesignResult, PDBSearchInput
+from agents.schemas import ProteinDesignResult, PDBSearchInput, RfDiffusionPoll
 from langchain.tools import StructuredTool
+import uuid
+from threading import Thread
+from langchain_core.messages import AIMessage
+from langchain_core.messages import ToolMessage
 
 rf_key = os.getenv("RF_DIFF_KEY")
 
-def design_protein(input_pdb: str, hotspot_res: list[str], contigs: str, diffusion_steps: int = 15) -> dict:
+# TODO: replace this with postgres/redis
+rf_jobs = {}
+
+# NOTE: Only using the first 200 lines in the PDB (make this faster) change this later!!
+def design_protein(job_id, input_pdb: str, hotspot_res: list[str], contigs: str, diffusion_steps: int = 15) -> dict:
     print(f"Designing protein with hotspot_res {hotspot_res} and contigs {contigs}")
     r = requests.post(
     url=os.getenv("URL", "https://health.api.nvidia.com/v1/biology/ipd/rfdiffusion/generate"),
@@ -27,17 +35,25 @@ def design_protein(input_pdb: str, hotspot_res: list[str], contigs: str, diffusi
             message=f"Failed to load due to {r.text}",
             pdb=None
         )
-    return ProteinDesignResult(
+    rf_jobs[job_id] = ProteinDesignResult(
         message=f"Protein designed with {len(input_pdb)} characters of input and hotspots {hotspot_res} and contigs {contigs}.",
         pdb=json.loads(r.text)["output_pdb"]
     ).model_dump()
 
+def design_protein_async(input_pdb: str, hotspot_res: list[str], contigs: str, diffusion_steps: int = 15) -> dict:
+    job_id = str(uuid.uuid4())
+    rf_jobs[job_id] = {"status": "pending"}
+    Thread(target=design_protein, args=(job_id, input_pdb, hotspot_res, contigs, diffusion_steps)).start()
+    return {"job_id": job_id}
+
 rf_diffusion_tool = StructuredTool.from_function(
-    func=design_protein,
+    func=design_protein_async,
     name="rf_diffusion_tool",
     description="""Design a protein using RF diffusion. 
     Requires full PDB file content (not just a PDB ID) as input_pdb. 
     Use `pdb_search_tool` first if you need to fetch a PDB file from an ID.
+
+    This tool is asynchronous returns a job_id which must be passed to the rf_diffusion_poll_tool to actually get the results
 
     contigs:
 
@@ -58,6 +74,19 @@ rf_diffusion_tool = StructuredTool.from_function(
     return_schema=dict,
 )
 
+def poll_rf_diffusion(job_id: str) -> dict:
+    job = rf_jobs.get(job_id, {"status": "not_found"})
+    return job
+
+rf_diffusion_poll_tool = StructuredTool.from_function(
+    func=poll_rf_diffusion,
+    name="rf_diffusion_poll_tool",
+    description="""Poll for a result from the rf_diffusion_tool""",
+    args_schema=RfDiffusionPoll,
+    return_schema=str
+)
+
+# NOTE: This is only getting the first 100 lines of a pdb, change in the future!!
 def search_pdb(pdb_id: str) -> str:
     print(f"Searching pdb {pdb_id}")
     response = requests.get(f"https://files.rcsb.org/download/{pdb_id}.pdb")

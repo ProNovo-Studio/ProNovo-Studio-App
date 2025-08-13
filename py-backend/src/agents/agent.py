@@ -4,7 +4,7 @@ import threading
 from agents.tools import rf_diffusion_tool, pdb_search_tool
 
 # example prompt: design a protein using the pdb 1R42 and contigs A20-24/0 20-100 and hotspots A21, A22
-
+#NOTE: NOT IN USE! DEPRECATED!
 class Agent:
     _instance = None
     _lock = threading.Lock()
