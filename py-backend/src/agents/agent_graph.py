@@ -15,56 +15,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-class AgentState(TypedDict):
-    messages: list
-    inputs: dict
-    tool_outputs: list
-
-def create_router_node(llm: ChatOpenAI, tools: list[Tool]):
-    llm_with_tools = llm.bind_tools(tools)
-
-    def _router(state: AgentState):
-        messages = state["messages"]
-        response = llm_with_tools.invoke(messages)
-        if isinstance(response, ToolMessage):
-            return {
-                **state,
-                "messages": messages + [response],
-                "tool_outputs": state["tool_outputs"] + [response]
-            }
-        else:
-            return {
-              **state,
-              "messages": messages + [response]
-            }
-
-    return RunnableLambda(_router)
-
-
-def get_langgraph_agent() -> Runnable:
-    llm = ChatOpenAI(model="gpt-4o-mini")
-    tools = [pdb_search_tool, rf_diffusion_tool]
-
-    router = create_router_node(llm, tools)
-    tool_node = ToolNode(tools=tools)
-
-    builder = StateGraph(AgentState)
-    builder.add_node("agent", router)
-    builder.add_node("tools", tool_node)
-
-    builder.set_entry_point("agent")
-    builder.add_conditional_edges("agent", tools_condition)  # agent → tools
-    builder.add_edge("tools", "agent")                       # tools → agent
-    builder.set_finish_point("agent")
-
-    graph = builder.compile()
-    return graph
-
 
 class State(TypedDict):
     messages: Annotated[list, add_messages]
 
-def get_test_graph():
+def get_graph():
   llm = ChatOpenAI(model="gpt-4o-mini")
   graph_builder = StateGraph(State)
 

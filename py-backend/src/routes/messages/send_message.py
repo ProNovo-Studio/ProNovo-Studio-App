@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import Optional
-from agents.agent_graph import get_langgraph_agent, get_test_graph
+from agents.agent_graph import get_langgraph_agent, get_graph
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.messages import ToolMessage
 import json
@@ -14,7 +14,7 @@ class message(BaseModel):
     content: str
     data: Optional[str]
 
-agent = get_test_graph()
+agent = get_graph()
 
 @send_message_router.post("/message-send")
 async def send_message(data: message) -> message:
