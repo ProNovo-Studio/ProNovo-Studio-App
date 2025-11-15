@@ -11,4 +11,5 @@ export interface Message {
   sender: string;
   content: string;
   data: MessageData;
+  thread_id: string;
 }

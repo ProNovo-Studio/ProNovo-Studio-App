@@ -10,6 +10,7 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import { FileUpload } from "./FileUpload";
 import { useMessage, Message } from "sdk";
+import { v4 as uuidv4 } from "uuid";
 
 export const ChatPane = (params: {
   setPdbContent: React.Dispatch<React.SetStateAction<string | null>>;
@@ -27,6 +28,18 @@ export const ChatPane = (params: {
     setFileName(file.name);
   };
 
+  // TODO use setThreadId in a 'reset convo button'
+  const [threadId, setThreadId] = useState(() => {
+    // Check localStorage first
+    const saved = localStorage.getItem("chat_thread_id");
+    return saved || uuidv4();
+  });
+
+  // Save to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("chat_thread_id", threadId);
+  }, [threadId]);
+
   const handleSend = () => {
     if (!input.trim()) return;
 
@@ -35,6 +48,7 @@ export const ChatPane = (params: {
       sender: "user",
       content: input,
       data: null,
+      thread_id: threadId,
     };
 
     let botMessage: Message | null;

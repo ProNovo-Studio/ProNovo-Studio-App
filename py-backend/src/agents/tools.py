@@ -9,6 +9,22 @@ from langchain.tools import StructuredTool
 
 rf_key = os.getenv("RF_DIFF_KEY")
 
+# protein mpnn
+def design_seq(input_pdb: str, ca_only: bool, soluble_model: bool, temp: list[int] = [0.1]) -> str:
+    r = requests.post(
+        url=os.getenv("URL", "https://health.api.nvidia.com/v1/biology/ipd/proteinmpnn/predict"),
+        headers={"Authorization": f"Bearer {rf_key}"},
+        json={
+            "input_pdb": input_pdb,
+            "ca_only": ca_only,
+            "use_soluble_model": soluble_model,
+            "sampling_temp": temp,
+        },
+    )
+    print(json.loads(r.text))
+    return json.loads(r.text)["mfasta"]
+
+# rf diffusion
 def design_protein(input_pdb: str, hotspot_res: list[str], contigs: str, diffusion_steps: int = 15) -> dict:
     print(f"Designing protein with hotspot_res {hotspot_res} and contigs {contigs}")
     r = requests.post(
@@ -26,7 +42,7 @@ def design_protein(input_pdb: str, hotspot_res: list[str], contigs: str, diffusi
         return ProteinDesignResult(
             message=f"Failed to load due to {r.text}",
             pdb=None
-        )
+        ).model_dump()
     return ProteinDesignResult(
         message=f"Protein designed with {len(input_pdb)} characters of input and hotspots {hotspot_res} and contigs {contigs}.",
         pdb=json.loads(r.text)["output_pdb"]
@@ -37,7 +53,10 @@ rf_diffusion_tool = StructuredTool.from_function(
     name="rf_diffusion_tool",
     description="""Design a protein using RF diffusion. 
     Requires full PDB file content (not just a PDB ID) as input_pdb. 
-    Use `pdb_search_tool` first if you need to fetch a PDB file from an ID.
+    Use `pdb_search_tool` first if you need to fetch a PDB file from an ID. 
+
+    If the user does not provide a PDB ID, then ask them.
+    If the user does not provide contigs or hotspot residues, then ask them before continuing.
 
     contigs:
 

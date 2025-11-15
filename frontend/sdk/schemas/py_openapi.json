@@ -132,6 +132,10 @@
               }
             ],
             "title": "Data"
+          },
+          "thread_id": {
+            "type": "string",
+            "title": "Thread Id"
           }
         },
         "type": "object",
@@ -139,7 +143,8 @@
           "id",
           "sender",
           "content",
-          "data"
+          "data",
+          "thread_id"
         ],
         "title": "message"
       }

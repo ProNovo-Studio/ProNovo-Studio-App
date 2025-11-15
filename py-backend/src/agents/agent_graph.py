@@ -9,6 +9,7 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from langchain_core.messages import ToolMessage
 from typing import Annotated
 from langgraph.graph.message import add_messages
+from langgraph.checkpoint.memory import MemorySaver
 
 import json
 from dotenv import load_dotenv
@@ -20,7 +21,7 @@ class State(TypedDict):
     messages: Annotated[list, add_messages]
 
 def get_graph():
-  llm = ChatOpenAI(model="gpt-4o-mini")
+  llm = ChatOpenAI(model="gpt-4o-mini", use_responses_api=True, use_previous_response_id=True)
   graph_builder = StateGraph(State)
 
   tools = [pdb_search_tool, rf_diffusion_tool]
@@ -42,5 +43,9 @@ def get_graph():
   graph_builder.add_edge("tools", "chatbot")
   graph_builder.add_edge(START, "chatbot")
   graph = graph_builder.compile()
+
+  # Add memory checkpointer
+  memory = MemorySaver()
+  graph = graph_builder.compile(checkpointer=memory)
 
   return graph

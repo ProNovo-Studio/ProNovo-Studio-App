@@ -1,5 +1,22 @@
 # 📦 Release Notes
 
+## Version 1.0.4 – November 14, 2025
+
+### 🚀 New Features
+
+- **Contextual Awareness**: Added the ability for the agent to be aware of past conversations and guide the user towards using the tools
+- **Prompt Engineering**: Improved prompts on RF diffusion tool to explain arguments a little better
+
+## Version 1.0.3 – November 6, 2025
+
+### 🚀 New Features
+
+- **New pipeline with protein mpnn**: Set up a pipeline using rf diffusion and protein mpnn, this will be helpful for creating agent tools that use both
+
+### 🐛 Bug Fixes
+
+- Fixed poor error handling when the RF diffusion tool couldn't design anything
+
 ## Version 1.0.2 – July 16, 2025
 
 ### 🚀 New Features
