@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { FileUpload } from "./FileUpload";
-import { useMessage, Message } from "sdk";
+import { useMessage, Message, HTTPValidationError } from "sdk";
 import { v4 as uuidv4 } from "uuid";
 
 export const ChatPane = (params: {
@@ -21,6 +21,7 @@ export const ChatPane = (params: {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const [fileName, setFileName] = useState<string | null>(null);
+  const [messageLoading, setMessageLoading] = useState<boolean>(false);
 
   const { sendMessage } = useMessage();
 
@@ -53,15 +54,23 @@ export const ChatPane = (params: {
 
     let botMessage: Message | null;
 
+    setMessages((prev) => [...prev, newMessage]);
+    setMessageLoading(true);
+
     sendMessage({
       message: newMessage,
       onSuccessCallback: (data: Message) => {
+        setMessageLoading(false);
         console.log(data);
         botMessage = data;
         if (botMessage.data) {
           setPdbContent(botMessage.data);
         }
-        setMessages((prev) => [...prev, newMessage, data]);
+        setMessages((prev) => [...prev, data]);
+      },
+      onErrorCallback: (error: HTTPValidationError) => {
+        setMessageLoading(false);
+        alert(`Message failed due to: ${error.detail}`);
       },
     });
 
@@ -117,6 +126,21 @@ export const ChatPane = (params: {
               <Typography variant="body1">{msg.content}</Typography>
             </Box>
           ))}
+          {messageLoading && (
+            <Box
+              alignSelf={"flex-start"}
+              sx={{
+                maxWidth: "75%",
+                px: 2,
+                py: 1,
+                borderRadius: 2,
+                bgcolor: "grey.300",
+                color: "black",
+              }}
+            >
+              <div className="loader"></div>
+            </Box>
+          )}
           <div ref={messagesEndRef} />
         </Stack>
       </Box>

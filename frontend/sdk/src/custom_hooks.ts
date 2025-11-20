@@ -1,4 +1,4 @@
-import { Message } from "./codegen_models";
+import { HTTPValidationError, Message } from "./codegen_models";
 import { useSendMessageMessageSendPost } from "./py_api";
 
 export const useMessage = () => {
@@ -7,8 +7,9 @@ export const useMessage = () => {
   const sendMessage = (params: {
     message: Message;
     onSuccessCallback: (response: Message) => void;
+    onErrorCallback: (error: HTTPValidationError) => void;
   }) => {
-    const { message, onSuccessCallback } = params;
+    const { message, onSuccessCallback, onErrorCallback } = params;
     mutate(
       {
         data: message,
@@ -19,6 +20,7 @@ export const useMessage = () => {
           onSuccessCallback(data);
         },
         onError: (error) => {
+          onErrorCallback(error);
           console.log(error);
         },
       }

@@ -82,7 +82,7 @@ def search_pdb(pdb_id: str) -> str:
     response = requests.get(f"https://files.rcsb.org/download/{pdb_id}.pdb")
     if response.status_code == 200:
         lines = filter(lambda line: line.startswith("ATOM"), response.text.split("\n"))
-        return "\n".join(list(lines)[:100])
+        return "\n".join(list(lines)[:100]) # TODO causing an error due to context size too large (trimmed this is 10,559 tokens) set up pass by reference with stored pdb's
     return f"Error fetching {pdb_id}"
 
 pdb_search_tool = StructuredTool.from_function(

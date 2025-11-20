@@ -17,6 +17,7 @@ class message(BaseModel):
 
 agent = get_graph()
 
+#TODO return searched PDB's
 @send_message_router.post("/message-send")
 async def send_message(data: message) -> message:
     config = {"configurable": {"thread_id": data.thread_id}}
@@ -38,8 +39,11 @@ async def send_message(data: message) -> message:
                 print("\n\n\n-------------------------")
                 print(output)
                 print("-------------------------\n\n\n\n")
-                output = json.loads(output)
-                pdb_data = output["pdb"]
+                try:
+                    output = json.loads(output)
+                    pdb_data = output["pdb"]
+                except:
+                    pass
 
     return message(
         id=data.id + 1,

@@ -1,5 +1,17 @@
 # 📦 Release Notes
 
+## Version 1.0.5 – November 19, 2025
+
+### 🚀 New Features
+
+- **Rf diffusion validations**: Set up proper validations of rf diffusion using pydantic and cleanly outputting errors to the users
+
+- **Loading enhancements on frontend**: Set up a loading icon and error handling on the frontend for better user feedback
+
+### 🐛 Bug Fixes
+
+- Temporary fix for rate and token limits, but this will continue to be addressed in future updates. Plans are to add semaphores and pass pdb's by reference from a file store and DB.
+
 ## Version 1.0.4 – November 14, 2025
 
 ### 🚀 New Features

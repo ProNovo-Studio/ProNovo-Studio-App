@@ -21,7 +21,7 @@ class State(TypedDict):
     messages: Annotated[list, add_messages]
 
 def get_graph():
-  llm = ChatOpenAI(model="gpt-4o-mini", use_responses_api=True, use_previous_response_id=True)
+  llm = ChatOpenAI(model="gpt-5.1", use_responses_api=True, use_previous_response_id=True)
   graph_builder = StateGraph(State)
 
   tools = [pdb_search_tool, rf_diffusion_tool]
