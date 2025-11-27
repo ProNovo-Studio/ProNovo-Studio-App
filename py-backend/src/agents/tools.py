@@ -71,7 +71,9 @@ rf_diffusion_tool = StructuredTool.from_function(
     hotspot residues:
 
       The hotspot residues string provides a way to specify which region the new protein (binder) must contact with the original 
-      input protein (a target), therefore we can guide a binder to a specific region. These residues must be within the input_pdb
+      input protein (a target), therefore we can guide a binder to a specific region. These residues must be within the input_pdb.
+
+      They are formatted as a list of amino acids present in the input PDB file, e.g. 'A50,A51,A52' specifies three hotspot residues in the Chain A, at positions 50, 51 and 52
     """,
     args_schema=ProteinDesignInput,
     return_schema=dict,

@@ -128,8 +128,8 @@ def validate_rf_params(pdb, hotspot_res, contigs):
 #       for residue in structure.get_residues()
 #   }
 
-#   hotspot_res = ["A119", "A123", "A233", "A234", "A235", "D234"]
-#   contigs = "5-15/A114-353/0 B10-20/30-40"
+#   hotspot_res = ["A19", "A20", "A21"]
+#   contigs = "5-15/A114-353/0 30-40"
 
 #   validate_hotspots(hotspot_res, residues)
 #   validate_contigs(contigs, residues)
