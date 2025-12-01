@@ -26,3 +26,10 @@ Set your interpretor to use the poetry environment
 3. Type "Python: Select Interpreter" and paste your env path _plus_ /bin/python at the end, so it should look like this:
 
 /Users/alexpinto/Library/Caches/pypoetry/virtualenvs/py-backend-RVjEZLhN-py3.12/bin/python
+
+# Make changes in the sdk
+
+1. Create a new api route in src/routes
+2. Import the route so that it is available in src/main.py and add it to app
+3. Un-comment the commented out code in main.py to make the openapi schema in ts/sdk
+4. Go into ts/sdk and run `npx orval` to generate the hooks

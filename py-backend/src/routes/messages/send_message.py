@@ -47,7 +47,7 @@ async def send_message(data: message) -> message:
 
     return message(
         id=data.id + 1,
-        sender="bot",
+        sender="ai",
         content=result["messages"][-1].content[0]["text"] if result["messages"] else "Done",
         data=pdb_data,
         thread_id=data.thread_id

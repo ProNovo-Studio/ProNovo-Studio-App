@@ -1,6 +1,7 @@
 packages:
   - ui
   - sdk
+  - ui_v2
 
 ignoredBuiltDependencies:
   - core-js
