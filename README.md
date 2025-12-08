@@ -1,5 +1,15 @@
 # 📦 Release Notes
 
+## Version 1.0.6 – December 7, 2025
+
+### 🚀 New Features
+
+- **Frontend Migration**: Migrated the molecular visualization platform to be the new frontend for this application, and hooked it up to the binder design backend
+
+### 🐛 Bug Fixes
+
+- Fixed improper parameters being passed to the RF diffusion validators
+
 ## Version 1.0.5 – November 19, 2025
 
 ### 🚀 New Features

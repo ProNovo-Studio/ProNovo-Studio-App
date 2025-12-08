@@ -23,7 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+# Uncomment to generate OpenAPI schema file
 # app.openapi()
 # with open("../frontend/sdk/schemas/py_openapi.json", "w+") as f:
 #     print(app.openapi_schema, "*************")
