@@ -32,4 +32,4 @@ Set your interpretor to use the poetry environment
 1. Create a new api route in src/routes
 2. Import the route so that it is available in src/main.py and add it to app
 3. Un-comment the commented out code in main.py to make the openapi schema in ts/sdk
-4. Go into ts/sdk and run `npx orval` to generate the hooks
+4. Go into frontend/sdk and run `npx orval` to generate the hooks

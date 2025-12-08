@@ -200,6 +200,7 @@ export const ChatPanel: React.FC = () => {
         setIsLoading(false);
       },
       onErrorCallback: (error) => {
+        console.log("Message send error:", error);
         const errorMessage: Message = {
           id: Math.floor(Math.random() * 1000000),
           sender: "ai",

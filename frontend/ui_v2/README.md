@@ -14,23 +14,26 @@ A modern web-based molecular visualization platform that combines natural langua
 ## Quick Start
 
 1. **Install Dependencies**
+
    ```bash
-   npm install
+   pnpm install
    ```
 
 2. **Start Development Server**
+
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 3. **Build for Production**
    ```bash
-   npm run build
+   pnpm run build
    ```
 
 ## Architecture
 
 ### Frontend Stack
+
 - **React 18** with TypeScript for type safety
 - **Vite** for fast development and building
 - **Tailwind CSS** for responsive styling
@@ -39,6 +42,7 @@ A modern web-based molecular visualization platform that combines natural langua
 - **Molstar** for 3D molecular visualization
 
 ### Key Components
+
 - `App.tsx` - Main application layout
 - `ChatPanel.tsx` - AI chat interface
 - `CodeEditor.tsx` - Monaco code editor integration
@@ -49,6 +53,7 @@ A modern web-based molecular visualization platform that combines natural langua
 ## Supported Structures
 
 The application can load structures from:
+
 - **PDB codes**: 4-character identifiers (e.g., "1CBS", "6M0J")
 - **Common proteins**: insulin, hemoglobin, antibody, DNA, etc.
 - **RCSB PDB Search**: Automatic name resolution
@@ -57,7 +62,7 @@ The application can load structures from:
 
 ### AI Code Generation (Claude)
 
-This app can generate Mol* builder code from natural language via a lightweight server that calls the Claude SDK.
+This app can generate Mol\* builder code from natural language via a lightweight server that calls the Claude SDK.
 
 1. Create a `.env` file in the project root and set `ANTHROPIC_API_KEY=your_key_here`.
 2. Run both the API server and Vite dev server together:
@@ -71,6 +76,7 @@ This app can generate Mol* builder code from natural language via a lightweight 
 Generated code and UI state persist across reloads via localStorage using Zustand's persist middleware. The editor toolbar also includes a button to save timestamped code snapshots.
 
 ### Project Structure
+
 ```
 src/
 ├── components/          # React components
@@ -82,12 +88,14 @@ src/
 ```
 
 ### Available Scripts
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+
+- `pnpm run dev` - Start development server
+- `pnpm run build` - Build for production
+- `pnpm run preview` - Preview production build
+- `pnpm run lint` - Run ESLint
 
 ### Adding New Features
+
 1. Create components in `src/components/`
 2. Add utility functions in `src/utils/`
 3. Update state management in `src/stores/`
