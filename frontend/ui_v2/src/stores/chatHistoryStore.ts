@@ -122,7 +122,7 @@ export const useChatHistoryStore = create<ChatHistoryState>()(
                   id: Math.floor(Math.random() * 1000000),
                   sender: "ai",
                   content:
-                    'Welcome to NovoProtein AI! Ask me to "show insulin" or "display hemoglobin".',
+                    "Welcome to ProNovo Studio! Ask me about binder design, protein engineering, or any related topic. How can I assist you today?",
                   data: null,
                   thread_id: sessionId,
                 },

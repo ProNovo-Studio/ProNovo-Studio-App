@@ -322,7 +322,8 @@ export const ChatPanel: React.FC = () => {
             </div>
           </div>
         )}
-        <div className="mb-3">
+        {/* Quick start prompts */}
+        {/* <div className="mb-3">
           <div className="text-xs text-gray-500 mb-2">Quick start:</div>
           <div className="flex flex-wrap gap-2">
             {quickPrompts.map((prompt, index) => (
@@ -335,14 +336,14 @@ export const ChatPanel: React.FC = () => {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         <form onSubmit={handleSubmit} className="flex space-x-2">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask me to visualize a protein..."
+            placeholder="Ask me about binder design..."
             className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
             disabled={isLoading}
           />

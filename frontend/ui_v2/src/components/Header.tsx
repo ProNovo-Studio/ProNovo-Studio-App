@@ -22,10 +22,8 @@ export const Header: React.FC = () => {
     <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
       <div className="flex items-center space-x-2">
         <Atom className="w-8 h-8 text-blue-600" />
-        <h1 className="text-xl font-bold text-gray-900">NovoProtein AI</h1>
-        <span className="text-sm text-gray-500">
-          Molecular Visualization Platform
-        </span>
+        <h1 className="text-xl font-bold text-gray-900">ProNovo Studio</h1>
+        <span className="text-sm text-gray-500">Binder Design Platform</span>
       </div>
 
       <div className="flex items-center space-x-4">
