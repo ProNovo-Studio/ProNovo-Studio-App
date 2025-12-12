@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../node_modules/.pnpm/molstar@4.18.0_@types+react@18.3.27_fp-ts@2.16.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/molstar/lib/mol-plugin-ui/react18.js"],
+  "sourcesContent": ["/**\n * Copyright (c) 2024 mol* contributors, licensed under MIT, See LICENSE file for more info.\n *\n * @author David Sehnal <david.sehnal@gmail.com>\n */\nimport { createRoot } from 'react-dom/client';\nexport function renderReact18(element, target) {\n    createRoot(target).render(element);\n}\n"],
+  "mappings": ";;;;;;;;;AAKA,oBAA2B;AACpB,SAAS,cAAc,SAAS,QAAQ;AAC3C,gCAAW,MAAM,EAAE,OAAO,OAAO;AACrC;",
+  "names": []
+}

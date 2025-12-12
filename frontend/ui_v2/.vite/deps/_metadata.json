@@ -1,0 +1,157 @@
+{
+  "hash": "459a35ff",
+  "configHash": "a0a4461f",
+  "lockfileHash": "fcba8e84",
+  "browserHash": "0026ecfc",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../../node_modules/.pnpm/react@18.3.1/node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "e3cd6c4b",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../../node_modules/.pnpm/react@18.3.1/node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "f348f1fc",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../../node_modules/.pnpm/react-dom@18.3.1_react@18.3.1/node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "cc008935",
+      "needsInterop": true
+    },
+    "@tanstack/react-query": {
+      "src": "../../../node_modules/.pnpm/@tanstack+react-query@5.80.10_react@18.3.1/node_modules/@tanstack/react-query/build/modern/index.js",
+      "file": "@tanstack_react-query.js",
+      "fileHash": "98b77ea3",
+      "needsInterop": false
+    },
+    "lucide-react": {
+      "src": "../../../node_modules/.pnpm/lucide-react@0.427.0_react@18.3.1/node_modules/lucide-react/dist/esm/lucide-react.js",
+      "file": "lucide-react.js",
+      "fileHash": "3e3c12f5",
+      "needsInterop": false
+    },
+    "zustand": {
+      "src": "../../../node_modules/.pnpm/zustand@4.5.7_@types+react@18.3.27_immer@10.2.0_react@18.3.1/node_modules/zustand/esm/index.mjs",
+      "file": "zustand.js",
+      "fileHash": "e1abd274",
+      "needsInterop": false
+    },
+    "zustand/middleware": {
+      "src": "../../../node_modules/.pnpm/zustand@4.5.7_@types+react@18.3.27_immer@10.2.0_react@18.3.1/node_modules/zustand/esm/middleware.mjs",
+      "file": "zustand_middleware.js",
+      "fileHash": "f59ec5e2",
+      "needsInterop": false
+    },
+    "@monaco-editor/react": {
+      "src": "../../../node_modules/.pnpm/@monaco-editor+react@4.7.0_monaco-editor@0.55.1_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/@monaco-editor/react/dist/index.mjs",
+      "file": "@monaco-editor_react.js",
+      "fileHash": "b2d93db2",
+      "needsInterop": false
+    },
+    "molstar/lib/mol-plugin-ui": {
+      "src": "../../../node_modules/.pnpm/molstar@4.18.0_@types+react@18.3.27_fp-ts@2.16.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/molstar/lib/mol-plugin-ui/index.js",
+      "file": "molstar_lib_mol-plugin-ui.js",
+      "fileHash": "2419264f",
+      "needsInterop": false
+    },
+    "molstar/lib/mol-plugin-ui/spec": {
+      "src": "../../../node_modules/.pnpm/molstar@4.18.0_@types+react@18.3.27_fp-ts@2.16.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/molstar/lib/mol-plugin-ui/spec.js",
+      "file": "molstar_lib_mol-plugin-ui_spec.js",
+      "fileHash": "06a594d2",
+      "needsInterop": false
+    },
+    "molstar/lib/mol-plugin-ui/react18": {
+      "src": "../../../node_modules/.pnpm/molstar@4.18.0_@types+react@18.3.27_fp-ts@2.16.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/molstar/lib/mol-plugin-ui/react18.js",
+      "file": "molstar_lib_mol-plugin-ui_react18.js",
+      "fileHash": "f2d1bd98",
+      "needsInterop": false
+    },
+    "molstar/lib/mol-plugin/spec": {
+      "src": "../../../node_modules/.pnpm/molstar@4.18.0_@types+react@18.3.27_fp-ts@2.16.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/molstar/lib/mol-plugin/spec.js",
+      "file": "molstar_lib_mol-plugin_spec.js",
+      "fileHash": "7ae03971",
+      "needsInterop": false
+    },
+    "molstar/lib/extensions/mvs/behavior": {
+      "src": "../../../node_modules/.pnpm/molstar@4.18.0_@types+react@18.3.27_fp-ts@2.16.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/molstar/lib/extensions/mvs/behavior.js",
+      "file": "molstar_lib_extensions_mvs_behavior.js",
+      "fileHash": "6fe98d28",
+      "needsInterop": false
+    },
+    "molstar/lib/mol-model/structure": {
+      "src": "../../../node_modules/.pnpm/molstar@4.18.0_@types+react@18.3.27_fp-ts@2.16.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/molstar/lib/mol-model/structure.js",
+      "file": "molstar_lib_mol-model_structure.js",
+      "fileHash": "dcc65c86",
+      "needsInterop": false
+    },
+    "uuid": {
+      "src": "../../../node_modules/.pnpm/uuid@11.1.0/node_modules/uuid/dist/esm-browser/index.js",
+      "file": "uuid.js",
+      "fileHash": "260f4b95",
+      "needsInterop": false
+    },
+    "molstar/lib/extensions/mvs/tree/mvs/mvs-builder": {
+      "src": "../../../node_modules/.pnpm/molstar@4.18.0_@types+react@18.3.27_fp-ts@2.16.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/molstar/lib/extensions/mvs/tree/mvs/mvs-builder.js",
+      "file": "molstar_lib_extensions_mvs_tree_mvs_mvs-builder.js",
+      "fileHash": "36293f96",
+      "needsInterop": false
+    },
+    "molstar/lib/extensions/mvs/load": {
+      "src": "../../../node_modules/.pnpm/molstar@4.18.0_@types+react@18.3.27_fp-ts@2.16.11_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/molstar/lib/extensions/mvs/load.js",
+      "file": "molstar_lib_extensions_mvs_load.js",
+      "fileHash": "449161d5",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../../node_modules/.pnpm/axios@1.10.0/node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "fc1bfac3",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-2UWBCIJT": {
+      "file": "chunk-2UWBCIJT.js"
+    },
+    "chunk-56E7FU5U": {
+      "file": "chunk-56E7FU5U.js"
+    },
+    "chunk-RVKCOBC4": {
+      "file": "chunk-RVKCOBC4.js"
+    },
+    "chunk-BOTKILZC": {
+      "file": "chunk-BOTKILZC.js"
+    },
+    "chunk-CLY72GQO": {
+      "file": "chunk-CLY72GQO.js"
+    },
+    "chunk-HZ3UTCAK": {
+      "file": "chunk-HZ3UTCAK.js"
+    },
+    "chunk-GA6RA535": {
+      "file": "chunk-GA6RA535.js"
+    },
+    "chunk-Y4JRF7OT": {
+      "file": "chunk-Y4JRF7OT.js"
+    },
+    "chunk-TA3F3DCY": {
+      "file": "chunk-TA3F3DCY.js"
+    },
+    "chunk-7ZJYYXKJ": {
+      "file": "chunk-7ZJYYXKJ.js"
+    },
+    "chunk-7PELO4AO": {
+      "file": "chunk-7PELO4AO.js"
+    },
+    "chunk-5VKIP5V5": {
+      "file": "chunk-5VKIP5V5.js"
+    },
+    "chunk-WOOG5QLI": {
+      "file": "chunk-WOOG5QLI.js"
+    }
+  }
+}

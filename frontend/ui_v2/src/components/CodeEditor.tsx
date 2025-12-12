@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { Play, RotateCcw, Copy, FileText, Save } from "lucide-react";
 import { useAppStore } from "../stores/appStore";
@@ -18,6 +18,8 @@ export const CodeEditor: React.FC = () => {
   const { plugin, currentCode, setCurrentCode, isExecuting, setIsExecuting } =
     useAppStore();
   const editorRef = useRef<any>(null);
+
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     if (!currentCode) setCurrentCode(defaultCode);
@@ -130,7 +132,7 @@ try {
 
       <div className="flex-1">
         <Editor
-          height="100%"
+          height="70%"
           defaultLanguage="javascript"
           value={currentCode}
           onChange={(value) => setCurrentCode(value || "")}
@@ -147,6 +149,20 @@ try {
             insertSpaces: true,
           }}
         />
+        <div className="p-4 border-t border-gray-200">
+          <textarea
+            className="w-full h-24 p-2 border border-gray-300 rounded"
+            placeholder="Describe how you want to update the molecular display..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <button
+            className="mt-2 px-4 py-1 bg-blue-600 text-white rounded"
+            onClick={() => {}}
+          >
+            Update Display
+          </button>
+        </div>
       </div>
     </div>
   );

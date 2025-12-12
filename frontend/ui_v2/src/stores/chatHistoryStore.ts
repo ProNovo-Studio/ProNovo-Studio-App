@@ -4,6 +4,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import type { Message } from "../../sdk/src/codegen_models/message";
 import type { MessageData } from "../../sdk/src/codegen_models/messageData";
 import { v4 as uuidv4 } from "uuid";
+import { useAppStore } from "./appStore";
 
 export interface ChatSession {
   id: string;
@@ -532,6 +533,7 @@ export const useActiveSession = () => {
   const activeSession = useChatHistoryStore((state) =>
     state.getActiveSession()
   );
+  const setLastLoadedPdb = useAppStore((state) => state.setLastLoadedPdb);
   const addMessage = useChatHistoryStore((state) => state.addMessageToSession);
   const updateMessages = useChatHistoryStore(
     (state) => state.updateSessionMessages
@@ -542,6 +544,10 @@ export const useActiveSession = () => {
     addMessage: (message: Message) => {
       if (activeSession) {
         addMessage(activeSession.id, message);
+        // TODO: Update last loaded PDB in app store using actual pdb data
+        // if (message.data && message.data.pdbId) {
+        //   setLastLoadedPdb(message.data.pdbId);
+        // }
       }
     },
     updateMessages: (messages: Message[]) => {
