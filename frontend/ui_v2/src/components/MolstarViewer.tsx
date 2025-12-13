@@ -89,7 +89,8 @@ export const MolstarViewer: React.FC = () => {
 
               addSelection({
                 kind: "residue",
-                pdbId: lastLoadedPdb || undefined,
+                // pdbId now represents a display identifier; when lastLoadedPdb is raw data, skip id
+                pdbId: undefined,
                 compId,
                 labelSeqId: labelSeqId ?? null,
                 authSeqId: insCode ? `${authSeqId}${insCode}` : authSeqId,
@@ -105,6 +106,7 @@ export const MolstarViewer: React.FC = () => {
 
         // Priority 1: Run any queued code
         if (pendingCodeToRun && pendingCodeToRun.trim()) {
+          console.log("[Molstar] executing pending code on init");
           try {
             setIsExecuting(true);
             const exec = new CodeExecutor(pluginInstance);
@@ -121,6 +123,7 @@ export const MolstarViewer: React.FC = () => {
 
         // Priority 2: If there is existing code in the editor, execute it
         if (currentCode && currentCode.trim()) {
+          console.log("[Molstar] executing currentCode on init");
           try {
             setIsExecuting(true);
             const exec = new CodeExecutor(pluginInstance);
@@ -134,8 +137,16 @@ export const MolstarViewer: React.FC = () => {
           return;
         }
 
-        // Fallback: load default only when no code is present
-        await loadDefaultStructure(pluginInstance);
+        // If there is PDB data in state, load from raw string; otherwise load default from URL
+        console.log("lastLoadedPdb:", lastLoadedPdb);
+        if (lastLoadedPdb && lastLoadedPdb.trim()) {
+          console.log(
+            "[Molstar] initViewer: loading structure from lastLoadedPdb"
+          );
+          await loadStructureFromRaw(pluginInstance, lastLoadedPdb);
+        } else {
+          await loadDefaultStructure(pluginInstance);
+        }
         console.log("[Molstar] initViewer: default structure loaded");
       } catch (error) {
         console.error("[Molstar] initViewer: failed", error);
@@ -199,12 +210,10 @@ export const MolstarViewer: React.FC = () => {
       );
       console.timeEnd("[Molstar] addRepresentation");
 
-      // Record default PDB in store so SelectionContext has a PDB
+      // Do not set lastLoadedPdb to an ID; keep it for raw data only
       try {
         const state = useAppStore.getState?.();
-        if (state?.setLastLoadedPdb) state.setLastLoadedPdb("1CBS");
-
-        // Also set the current code so the backend knows what structure is loaded
+        // Initialize current code if empty
         if (
           state?.setCurrentCode &&
           (!state.currentCode || state.currentCode.trim() === "")
@@ -224,10 +233,92 @@ export const MolstarViewer: React.FC = () => {
     }
   };
 
+  const loadStructureFromRaw = async (
+    pluginInstance: PluginUIContext,
+    pdbData: string
+  ) => {
+    try {
+      console.log("[Molstar] loadStructureFromRaw: start");
+      // Best-effort: remove previous structures to avoid stacking
+      try {
+        const hierarchy = (pluginInstance as any).managers?.structure
+          ?.hierarchy;
+        if (hierarchy?.current?.structures?.length) {
+          const roots = hierarchy.current.structures
+            .map((s: any) => s.cell?.transform.ref)
+            .filter(Boolean);
+          if (roots.length && (pluginInstance as any).state?.data) {
+            const state = (pluginInstance as any).state.data;
+            roots.forEach((ref: string) => {
+              try {
+                state.delete(ref);
+              } catch {}
+            });
+          }
+        }
+      } catch {}
+      // Use Blob + object URL to reuse the download builder
+      const blob = new Blob([pdbData], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const data = await pluginInstance.builders.data.download({
+        url,
+        isBinary: false,
+      });
+      console.log(
+        "[Molstar] raw data cell:",
+        (data as any)?.cell?.transform?.ref
+      );
+
+      const trajectory =
+        await pluginInstance.builders.structure.parseTrajectory(data, "pdb");
+      console.log("[Molstar] trajectory parsed:", !!trajectory?.cell);
+      const model = await pluginInstance.builders.structure.createModel(
+        trajectory
+      );
+      console.log("[Molstar] model created:", !!model?.cell);
+      const structure = await pluginInstance.builders.structure.createStructure(
+        model
+      );
+      console.log("[Molstar] structure created:", !!structure?.cell);
+      await pluginInstance.builders.structure.representation.addRepresentation(
+        structure,
+        {
+          type: "cartoon",
+          color: "secondary-structure",
+        }
+      );
+      const comps = (pluginInstance as any).managers?.structure?.component
+        ?.components;
+      console.log(
+        "[Molstar] components count:",
+        Array.isArray(comps) ? comps.length : comps?.size
+      );
+      // Focus structure and reset camera so it's visible
+      try {
+        pluginInstance.managers.camera.reset();
+        (pluginInstance.canvas3d as any)?.requestCameraReset?.();
+        (pluginInstance.canvas3d as any)?.requestDraw?.("structure-loaded");
+      } catch {}
+      console.log("[Molstar] loadStructureFromRaw: done");
+      URL.revokeObjectURL(url);
+      try {
+        setActivePane("viewer");
+      } catch {}
+    } catch (error) {
+      console.error("[Molstar] loadStructureFromRaw: failed", error);
+    }
+  };
+
   // Re-run current editor code whenever viewer is mounted/ready and code changes
   useEffect(() => {
     const run = async () => {
       if (!plugin || !isInitialized) return;
+      if (lastLoadedPdb && lastLoadedPdb.trim()) {
+        console.log("[Molstar] update: loading structure from lastLoadedPdb");
+        await loadStructureFromRaw(plugin, lastLoadedPdb);
+        // TODO returning for now, in the future get rid of this to enable editor code on lastLoadedPdb
+        return;
+      }
       const code = currentCode?.trim();
       if (!code) return;
       if (lastExecutedCodeRef.current === code) return;
@@ -244,7 +335,7 @@ export const MolstarViewer: React.FC = () => {
     };
     void run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [plugin, isInitialized, currentCode]);
+  }, [plugin, isInitialized, currentCode, lastLoadedPdb]);
 
   const handleScreenshot = async () => {
     if (!plugin) return;

@@ -26,6 +26,16 @@ async def send_message(data: message) -> message:
         "messages": [HumanMessage(content=data.content)],
     }
 
+    if data.content == "/test-rf-diffusion":
+        pdb_data = open("src/routes/messages/output.pdb", "r").read()
+        return message(
+            id=data.id + 1,
+            sender="ai",
+            content="Here is an RFdiffusion-designed binder for PDB 1R42 using:\n\n- Contigs: `A21-24/0 30-40` (kept target A21–A24 and designed a new 30–40 aa chain)\n- Hotspots: A19, A20, A21\n",
+            data=pdb_data,
+            thread_id=data.thread_id
+        )
+
     result = agent.invoke(state, config=config)
 
     print("\n\n\n\n", result)

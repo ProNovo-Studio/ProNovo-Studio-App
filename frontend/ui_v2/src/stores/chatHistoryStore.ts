@@ -544,10 +544,10 @@ export const useActiveSession = () => {
     addMessage: (message: Message) => {
       if (activeSession) {
         addMessage(activeSession.id, message);
-        // TODO: Update last loaded PDB in app store using actual pdb data
-        // if (message.data && message.data.pdbId) {
-        //   setLastLoadedPdb(message.data.pdbId);
-        // }
+        // Update last loaded PDB in app store if message carries PDB data as a string
+        if (message.data && typeof (message.data as any) === "string") {
+          setLastLoadedPdb(message.data as unknown as string);
+        }
       }
     },
     updateMessages: (messages: Message[]) => {
