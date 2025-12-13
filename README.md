@@ -1,5 +1,13 @@
 # 📦 Release Notes
 
+## Version 1.0.7 – December 12, 2025
+
+### 🚀 New Features
+
+- **Code editor**: Added a text box in code viewer to allow for future updates in creating code to better visualize pdb
+
+- **Pdb Viz**: Now loading designed pdb into molstar viewer
+
 ## Version 1.0.6 – December 7, 2025
 
 ### 🚀 New Features
