@@ -7,13 +7,13 @@ import { renderReact18 } from "molstar/lib/mol-plugin-ui/react18";
 import { PluginSpec } from "molstar/lib/mol-plugin/spec";
 import { MolViewSpec } from "molstar/lib/extensions/mvs/behavior";
 import { Camera, FullscreenIcon, RotateCw } from "lucide-react";
-import { useAppStore } from "../stores/appStore";
+import { useAppStore } from "../../../stores/appStore";
 import {
   StructureElement,
   StructureProperties,
 } from "molstar/lib/mol-model/structure";
 // OrderedSet no longer needed after switching to getFirstLocation
-import { CodeExecutor } from "../utils/codeExecutor";
+import { CodeExecutor } from "../../../utils/codeExecutor";
 
 export const MolstarViewer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);

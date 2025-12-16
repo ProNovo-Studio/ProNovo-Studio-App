@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { Play, RotateCcw, Copy, FileText, Save } from "lucide-react";
-import { useAppStore } from "../stores/appStore";
-import { CodeExecutor } from "../utils/codeExecutor";
+import { useAppStore } from "../../../stores/appStore";
+import { CodeExecutor } from "../../../utils/codeExecutor";
 
 const defaultCode = `// Default: Cartoon view of PDB 1CBS
 try {

@@ -1,5 +1,11 @@
 # 📦 Release Notes
 
+## Version 1.0.7 – December 15, 2025
+
+### 🚀 New Features
+
+- **Code editor**: Set up a router for chat vs pipelines, which will hold all previous jobs that have been run in the chat
+
 ## Version 1.0.7 – December 12, 2025
 
 ### 🚀 New Features

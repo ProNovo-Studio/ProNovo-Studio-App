@@ -1,16 +1,21 @@
-import { Header } from "./components/Header";
-import { ChatPanel } from "./components/ChatPanel";
-import { CodeEditor } from "./components/CodeEditor";
-import { MolstarViewer } from "./components/MolstarViewer";
-import { SettingsDialog } from "./components/SettingsDialog";
-import { ChatHistoryPanel } from "./components/ChatHistoryPanel";
-import { ChatHistorySidebar } from "./components/ChatHistorySidebar";
-import { ResizablePanel } from "./components/ResizablePanel";
+import { Header } from "../-NavBar";
+import { ChatPanel } from "./-components/ChatPanel";
+import { CodeEditor } from "./-components/CodeEditor";
+import { MolstarViewer } from "./-components/MolstarViewer";
+import { SettingsDialog } from "./-components/SettingsDialog";
+import { ChatHistoryPanel } from "./-components/ChatHistoryPanel";
+import { ChatHistorySidebar } from "./-components/ChatHistorySidebar";
+import { ResizablePanel } from "./-components/ResizablePanel";
 import { Eye, Code2, Settings } from "lucide-react";
-import { useAppStore } from "./stores/appStore";
-import { useSettingsStore } from "./stores/settingsStore";
-import { useChatHistoryStore } from "./stores/chatHistoryStore";
+import { useAppStore } from "../../stores/appStore";
+import { useSettingsStore } from "../../stores/settingsStore";
+import { useChatHistoryStore } from "../../stores/chatHistoryStore";
 import { useEffect } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/chat/")({
+  component: App,
+});
 
 function App() {
   const { activePane, setActivePane, chatPanelWidth, setChatPanelWidth } =

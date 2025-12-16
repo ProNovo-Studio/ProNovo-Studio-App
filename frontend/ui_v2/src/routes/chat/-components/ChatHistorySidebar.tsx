@@ -13,7 +13,7 @@ import {
 import {
   useChatHistoryStore,
   useSessionManagement,
-} from "../stores/chatHistoryStore";
+} from "../../../stores/chatHistoryStore";
 import { ChatHistoryItem } from "./ChatHistoryItem";
 
 export const ChatHistorySidebar: React.FC = () => {

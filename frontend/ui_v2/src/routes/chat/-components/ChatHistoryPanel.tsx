@@ -12,7 +12,7 @@ import {
 import {
   useChatHistoryStore,
   useSessionManagement,
-} from "../stores/chatHistoryStore";
+} from "../../../stores/chatHistoryStore";
 import { SessionListItem } from "./SessionListItem";
 
 interface ChatHistoryPanelProps {

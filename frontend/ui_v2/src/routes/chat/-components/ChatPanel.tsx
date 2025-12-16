@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Send, Sparkles, X } from "lucide-react";
-import { useAppStore } from "../stores/appStore";
+import { useAppStore } from "../../../stores/appStore";
 import {
   useChatHistoryStore,
   useActiveSession,
-} from "../stores/chatHistoryStore";
-import { useMessage } from "../../../sdk/src/custom_hooks";
-import type { Message } from "../../../sdk/src/codegen_models/message";
+} from "../../../stores/chatHistoryStore";
+import { useMessage } from "../../../../../sdk/src/custom_hooks";
+import type { Message } from "../../../../../sdk/src/codegen_models/message";
 import { CodeExecutor } from "../../utils/codeExecutor";
 import { api } from "../../utils/api";
 import { v4 as uuidv4 } from "uuid";

@@ -19,7 +19,7 @@ import {
   ChatSession,
   useChatHistoryStore,
   useSessionManagement,
-} from "../stores/chatHistoryStore";
+} from "../../../stores/chatHistoryStore";
 
 interface ChatHistoryItemProps {
   session: ChatSession;

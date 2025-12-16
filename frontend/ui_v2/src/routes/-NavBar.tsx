@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import { Atom, Settings, HelpCircle } from "lucide-react";
 import { useSettingsStore } from "../stores/settingsStore";
+import { useNavigate } from "@tanstack/react-router";
 
 export const Header: React.FC = () => {
   const { setSettingsDialogOpen } = useSettingsStore();
+  const navigate = useNavigate();
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -27,6 +29,22 @@ export const Header: React.FC = () => {
       </div>
 
       <div className="flex items-center space-x-4">
+        <button
+          className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-900"
+          onClick={() => {
+            navigate({ to: "/chat" });
+          }}
+        >
+          <span>Chat</span>
+        </button>
+        <button
+          className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-900"
+          onClick={() => {
+            navigate({ to: "/pipelines" });
+          }}
+        >
+          <span>Pipelines</span>
+        </button>
         <button className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-900">
           <HelpCircle className="w-4 h-4" />
           <span>Help</span>

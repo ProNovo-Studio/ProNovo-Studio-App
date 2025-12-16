@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { X, Code2, Palette, Zap, RotateCcw, Save, History } from "lucide-react";
-import { useSettingsStore } from "../stores/settingsStore";
-import { useChatHistoryStore } from "../stores/chatHistoryStore";
+import { useSettingsStore } from "../../../stores/settingsStore";
+import { useChatHistoryStore } from "../../../stores/chatHistoryStore";
 
 interface SettingsDialogProps {
   isOpen: boolean;
