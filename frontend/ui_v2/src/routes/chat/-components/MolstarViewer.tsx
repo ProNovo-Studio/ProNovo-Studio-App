@@ -18,6 +18,7 @@ import { CodeExecutor } from "../../../utils/codeExecutor";
 export const MolstarViewer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const lastExecutedCodeRef = useRef<string>("");
+  const isStructureUpdatingRef = useRef<boolean>(false);
   const [plugin, setPlugin] = useState<PluginUIContext | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -210,6 +211,18 @@ export const MolstarViewer: React.FC = () => {
       );
       console.timeEnd("[Molstar] addRepresentation");
 
+      // Ensure hierarchy reflects the new structure and camera is focused
+      try {
+        (
+          pluginInstance as any
+        ).managers?.structure?.hierarchy?.updateCurrent?.();
+        pluginInstance.managers.camera.reset();
+        (pluginInstance.canvas3d as any)?.requestCameraReset?.();
+        (pluginInstance.canvas3d as any)?.requestDraw?.(
+          "default-structure-loaded"
+        );
+      } catch {}
+
       // Do not set lastLoadedPdb to an ID; keep it for raw data only
       try {
         const state = useAppStore.getState?.();
@@ -228,6 +241,9 @@ export const MolstarViewer: React.FC = () => {
       } catch {}
 
       console.log("[Molstar] loadDefaultStructure: done");
+      try {
+        setActivePane("viewer");
+      } catch {}
     } catch (error) {
       console.error("[Molstar] loadDefaultStructure: failed", error);
     }
@@ -239,23 +255,39 @@ export const MolstarViewer: React.FC = () => {
   ) => {
     try {
       console.log("[Molstar] loadStructureFromRaw: start");
-      // Best-effort: remove previous structures to avoid stacking
+      // Strong clear: remove all existing structures & components to avoid stacking
       try {
-        const hierarchy = (pluginInstance as any).managers?.structure
-          ?.hierarchy;
+        const managers: any = (pluginInstance as any).managers;
+        const hierarchy = managers?.structure?.hierarchy;
+        const component = managers?.structure?.component;
+        const tree = (pluginInstance as any).state?.data;
         if (hierarchy?.current?.structures?.length) {
-          const roots = hierarchy.current.structures
-            .map((s: any) => s.cell?.transform.ref)
+          const structureRoots = hierarchy.current.structures
+            .map((s: any) => s?.cell?.transform?.ref)
             .filter(Boolean);
-          if (roots.length && (pluginInstance as any).state?.data) {
-            const state = (pluginInstance as any).state.data;
-            roots.forEach((ref: string) => {
-              try {
-                state.delete(ref);
-              } catch {}
-            });
-          }
+          // Remove via hierarchy API when available
+          try {
+            if (structureRoots.length && hierarchy.remove) {
+              hierarchy.remove(structureRoots);
+            }
+          } catch {}
+          // Fallback: delete from state tree
+          try {
+            if (structureRoots.length && tree) {
+              structureRoots.forEach((ref: string) => {
+                try {
+                  tree.delete(ref);
+                } catch {}
+              });
+            }
+          } catch {}
         }
+        // Also clear components/representations if any linger
+        try {
+          if (component?.components?.size) {
+            component.clear();
+          }
+        } catch {}
       } catch {}
       // Use Blob + object URL to reuse the download builder
       const blob = new Blob([pdbData], { type: "text/plain" });
@@ -268,6 +300,10 @@ export const MolstarViewer: React.FC = () => {
         "[Molstar] raw data cell:",
         (data as any)?.cell?.transform?.ref
       );
+      const state = useAppStore.getState?.();
+      state.setCurrentCode(`
+        await builder.addCartoonRepresentation({ color: 'secondary-structure' });
+        builder.focusView();`);
 
       const trajectory =
         await pluginInstance.builders.structure.parseTrajectory(data, "pdb");
@@ -287,6 +323,12 @@ export const MolstarViewer: React.FC = () => {
           color: "secondary-structure",
         }
       );
+      // Ensure hierarchy reflects only the new structure
+      try {
+        (
+          pluginInstance as any
+        ).managers?.structure?.hierarchy?.updateCurrent?.();
+      } catch {}
       const comps = (pluginInstance as any).managers?.structure?.component
         ?.components;
       console.log(
@@ -313,16 +355,20 @@ export const MolstarViewer: React.FC = () => {
   useEffect(() => {
     const run = async () => {
       if (!plugin || !isInitialized) return;
+      if (isStructureUpdatingRef.current) return;
       if (lastLoadedPdb && lastLoadedPdb.trim()) {
         console.log("[Molstar] update: loading structure from lastLoadedPdb");
+        isStructureUpdatingRef.current = true;
         await loadStructureFromRaw(plugin, lastLoadedPdb);
+        isStructureUpdatingRef.current = false;
         // TODO returning for now, in the future get rid of this to enable editor code on lastLoadedPdb
-        return;
+        // return;
       }
       const code = currentCode?.trim();
       if (!code) return;
       if (lastExecutedCodeRef.current === code) return;
       try {
+        isStructureUpdatingRef.current = true;
         setIsExecuting(true);
         const exec = new CodeExecutor(plugin);
         await exec.executeCode(code);
@@ -331,6 +377,7 @@ export const MolstarViewer: React.FC = () => {
         console.error("[Molstar] re-execute currentCode failed", e);
       } finally {
         setIsExecuting(false);
+        isStructureUpdatingRef.current = false;
       }
     };
     void run();
