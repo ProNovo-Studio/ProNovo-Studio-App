@@ -70,8 +70,8 @@ export const ChatPanel: React.FC = () => {
       selection.labelSeqId != null && selection.labelSeqId !== ""
         ? selection.labelSeqId
         : selection.authSeqId != null
-        ? selection.authSeqId
-        : "";
+          ? selection.authSeqId
+          : "";
     const chainText = chain ? ` (${chain})` : "";
     return `${selection.compId || "?"}${seq !== "" ? seq : ""}${chainText}`;
   };
@@ -178,7 +178,8 @@ export const ChatPanel: React.FC = () => {
       content: input.trim(),
       data: null,
       thread_id: threadId || "default-thread",
-    };
+      timestamp: new Date().toISOString(),
+    } as any;
 
     addMessage(userMessage);
     setInput("");
@@ -195,7 +196,8 @@ export const ChatPanel: React.FC = () => {
           content: response.content,
           data: response.data ?? null,
           thread_id: response.thread_id,
-        };
+          timestamp: new Date().toISOString(),
+        } as any;
         addMessage(aiMessage);
         setIsLoading(false);
       },
@@ -209,7 +211,8 @@ export const ChatPanel: React.FC = () => {
             "AI backend is unavailable. Please start the server and try again.",
           data: null,
           thread_id: threadId || "default-thread",
-        };
+          timestamp: new Date().toISOString(),
+        } as any;
         addMessage(errorMessage);
         setIsLoading(false);
       },
@@ -245,16 +248,14 @@ export const ChatPanel: React.FC = () => {
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex ${
-              message.type === "user" ? "justify-end" : "justify-start"
-            }`}
+            className={`flex ${message.type === "user" ? "justify-end" : "justify-start"
+              }`}
           >
             <div
-              className={`max-w-[80%] p-3 rounded-lg ${
-                message.type === "user"
+              className={`max-w-[80%] p-3 rounded-lg ${message.type === "user"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-100 text-gray-900"
-              }`}
+                }`}
             >
               {message.type === "ai" ? (
                 renderMessageContent(message.content)
