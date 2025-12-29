@@ -12,6 +12,7 @@ __pycache__/
 # production
 /build
 /dist
+frontend/ui_v2/dist/
 
 # misc
 .DS_Store

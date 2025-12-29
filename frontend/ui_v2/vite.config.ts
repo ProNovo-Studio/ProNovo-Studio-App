@@ -12,6 +12,12 @@ export default defineConfig({
     react(),
   ],
   resolve: {
+    dedupe: [
+      "react",
+      "react-dom",
+      "@tanstack/react-query",
+      "@tanstack/react-router",
+    ],
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
