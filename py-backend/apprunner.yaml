@@ -1,20 +1,10 @@
 version: 1.0
-runtime: python311 # App Runner uses managed runtimes; 3.11 is the closest stable target
+runtime: python311
 build:
   commands:
-    pre-build:
-      # Install poetry version specified in your Dockerfile
-      - pip install poetry==2.1.3
     build:
-      # Run poetry install exactly as your Dockerfile does
-      - poetry config virtualenvs.create false
-      - poetry install --only main --no-root
+      - pip install --no-cache-dir -r requirements.txt
 run:
-  command: uvicorn src.main:app --host 0.0.0.0 --port 8000
+  command: fastapi run src/main.py
   network:
     port: 8000
-  env:
-    - name: POETRY_NO_INTERACTION
-      value: "1"
-    - name: POETRY_CACHE_DIR
-      value: "/tmp/poetry_cache"
