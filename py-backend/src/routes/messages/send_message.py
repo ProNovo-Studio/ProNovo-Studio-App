@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import Optional
-from agents.agent_graph import get_graph
+# from agents.agent_graph import get_graph
+from agents.no_agent import get_graph # NOTE ONLY FOR TESTING WITHOUT AGENT
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.messages import ToolMessage
 import json
