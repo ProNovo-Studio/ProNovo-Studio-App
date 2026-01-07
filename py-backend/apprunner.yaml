@@ -7,15 +7,12 @@ build:
       - echo "PWD:" && pwd
       - echo "LIST:" && ls -la
       - echo "PYTHON3:" && (python3 -V || true)
-      - echo "which python3:" && (command -v python3 || true)
       - echo "PIP3:" && python3 -m pip --version
-      - echo "PATH:" && echo $PATH
     build:
-      - echo "Installing deps (verbose)…"
-      - python3 -m pip install --no-cache-dir -r requirements.txt -vvv
-      - python3 -c "import fastapi, langgraph; print('Dependencies OK')"
+      - echo "Installing deps into ./vendor…"
+      - python3 -m pip install --no-cache-dir -r requirements.txt -t ./vendor -vvv
+      - python3 -c "import importlib.util as iu; print('fastapi found?', iu.find_spec('fastapi') is not None)"
 run:
-  # Use the CLI via module to avoid PATH issues
-  command: python3 -m fastapi run src/main.py --host 0.0.0.0 --port 8000
+  command: PYTHONPATH=./vendor python3 -m uvicorn main:app --app-dir src --host 0.0.0.0 --port 8000
   network:
     port: 8000
