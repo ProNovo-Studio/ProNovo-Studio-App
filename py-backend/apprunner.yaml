@@ -13,6 +13,7 @@ build:
       - python3 -m pip install --no-cache-dir -r requirements.txt -t ./vendor -vvv
       - python3 -c "import importlib.util as iu; print('fastapi found?', iu.find_spec('fastapi') is not None)"
 run:
-  command: PYTHONPATH=./vendor python3 -m uvicorn main:app --app-dir src --host 0.0.0.0 --port 8000
+  # Use a shell so we can set PYTHONPATH inline
+  command: /bin/sh -lc 'PYTHONPATH=./vendor python3 -m uvicorn main:app --app-dir src --host 0.0.0.0 --port 8000'
   network:
     port: 8000
