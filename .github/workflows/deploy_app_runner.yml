@@ -36,7 +36,15 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Trigger App Runner Deployment
+        env:
+          SERVICE_ARN: ${{ secrets.APP_RUNNER_SERVICE_ARN }}
+          ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          REGION: ${{ secrets.AWS_REGION }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          
         run: |
+          IMAGE_URI="${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${ECR_REPOSITORY}:latest"
+        
           aws apprunner update-service \
-            --service-arn $(aws apprunner list-services --query "ServiceSummaryList[?ServiceName=='my-app-runner-service'].ServiceArn" --output text) \
-            --source-configuration "ImageRepository={ImageIdentifier=${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:latest,ImageRepositoryType=ECR},AutoDeploymentsEnabled=true"
+            --service-arn "$SERVICE_ARN" \
+            --source-configuration "ImageRepository={ImageIdentifier=$IMAGE_URI,ImageRepositoryType=ECR}"
